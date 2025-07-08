@@ -15,6 +15,10 @@
         },
         "@schematics/angular:pipe": {
           "standalone": false
+        },
+        "@schematics/angular:module": {
+          "typeSeparator": ".",
+          "routing": true
         }
       },
       "root": "",
