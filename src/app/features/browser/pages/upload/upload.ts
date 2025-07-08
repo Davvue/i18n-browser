@@ -7,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './upload.scss'
 })
 export class Upload {
+  handleFileInput(event: Event) {
+    if (!(event.target instanceof HTMLInputElement)) return;
 
+    console.log(event.target.files);
+  }
 }
