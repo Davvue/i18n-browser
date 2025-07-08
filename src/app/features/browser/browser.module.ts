@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { BrowserRoutingModule } from './browser-routing.module';
 import { Browser } from './pages/browser/browser';
+import { Upload } from './pages/upload/upload';
 
 
 @NgModule({
   declarations: [
-    Browser
+    Browser,
+    Upload
   ],
   imports: [
     CommonModule,
