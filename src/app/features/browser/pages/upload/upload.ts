@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {TranslationService} from '../../../../core/services/translation.service';
 
 @Component({
   selector: 'app-upload',
@@ -7,9 +8,14 @@ import { Component } from '@angular/core';
   styleUrl: './upload.scss'
 })
 export class Upload {
+  constructor(protected translationService: TranslationService) {}
+
   handleFileInput(event: Event) {
     if (!(event.target instanceof HTMLInputElement)) return;
 
-    console.log(event.target.files);
+    const file = event.target.files?.item(0);
+    if (file == null) return;
+
+    void this.translationService.loadLocale("en", file);
   }
 }

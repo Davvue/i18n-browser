@@ -16,4 +16,4 @@ export interface TranslationNode {
 
 export type TranslationRoot = TranslationNode;
 
-export type RawTranslation = Record<string, unknown>;
+export type RawTranslation = Record<string | number, unknown>;
