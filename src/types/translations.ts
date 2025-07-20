@@ -1,14 +1,12 @@
 import {type Locale} from './locales';
 
-export type TranslationValue = string;
+export type TranslationValue = string | null;
 
 export interface TranslationValues {
   [key: Locale]: TranslationValue;
 }
 
-export interface TranslationList {
-  [key: number]: TranslationValues;
-}
+export type TranslationList = TranslationValues[];
 
 export interface TranslationNode {
   [key: string]: TranslationNode | TranslationList | TranslationValues;

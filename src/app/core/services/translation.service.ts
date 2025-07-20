@@ -1,6 +1,10 @@
 import {Injectable, signal} from '@angular/core';
 import {Locale, Locales} from '../../../types/locales';
-import {RawTranslation, TranslationNode, TranslationRoot} from '../../../types/translations';
+import {
+  RawTranslation,
+  TranslationNode,
+  TranslationRoot,
+} from '../../../types/translations';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +46,9 @@ export class TranslationService {
 
       if (typeof value === "string") {
         result[key] = {[locale]: value};
+      } else if (Array.isArray(value)) {
+        result[key] = [];
+        for (const item of value) result[key].push({[locale]: item});
       } else {
         result[key] = this.parseTranslations(locale, value as RawTranslation);
       }
