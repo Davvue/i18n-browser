@@ -1,5 +1,7 @@
 <input type="file" accept="application/json" (change)="handleFileInput($event)"/>
 
+<input type="file" accept="application/json" (change)="handleFileInput2($event)" />
+
 <pre>
 {{ translationService.translations() | json}}
 </pre>

@@ -18,4 +18,13 @@ export class Upload {
 
     void this.translationService.loadLocale("en", file);
   }
+
+  handleFileInput2(event: Event) {
+    if (!(event.target instanceof HTMLInputElement)) return;
+
+    const file = event.target.files?.item(0);
+    if (file == null) return;
+
+    void this.translationService.loadLocale("de", file);
+  }
 }
