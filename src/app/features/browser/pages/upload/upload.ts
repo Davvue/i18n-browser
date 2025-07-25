@@ -25,6 +25,6 @@ export class Upload {
     const file = event.target.files?.item(0);
     if (file == null) return;
 
-    void this.translationService.loadLocale("de", file);
+    void this.translationService.loadLocale("en", file);
   }
 }
