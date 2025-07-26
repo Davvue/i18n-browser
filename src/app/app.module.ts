@@ -7,15 +7,17 @@ import {provideAnimations} from '@angular/platform-browser/animations';
 import {providePrimeNG} from 'primeng/config';
 import {provideHttpClient} from '@angular/common/http';
 import {CustomPreset} from '../lib/themeConfig';
+import {LayoutModule} from './features/layout/layout.module';
 
 @NgModule({
   declarations: [
-    App
+    App,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    CoreModule
+    CoreModule,
+    LayoutModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
