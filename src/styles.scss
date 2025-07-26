@@ -11,9 +11,13 @@ html {
 }
 
 body {
-  background-color: var(--p-surface-50);
+  background: var(--p-primary-50);
+  background: radial-gradient(at left bottom, var(--p-primary-50), var(--p-primary-100));
+  margin: 0;
+  padding: 0;
 }
 
 .p-dark body {
-  background-color: var(--p-surface-950);
+  background: var(--p-primary-50);
+  background: radial-gradient(at left bottom, var(--p-surface-800), var(--p-surface-900));
 }

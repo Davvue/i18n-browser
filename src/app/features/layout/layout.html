@@ -1,2 +1,21 @@
-<p>layout works!</p>
-<router-outlet/>
+<aside class="sidebar">
+    <header class="logo-container">
+        <div class="logo">
+            <i class="pi pi-globe"></i>
+        </div>
+    </header>
+
+    <nav class="menu">
+        <ul>
+            @for (item of menuItems; track item.label) {
+                <li class="menu-item" [routerLink]="item.routerLink" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <i [class]="item.icon"></i>
+                    <span>{{ item.label }}</span>
+                </li>
+            }
+        </ul>
+    </nav>
+</aside>
+<main class="content">
+    <router-outlet/>
+</main>
