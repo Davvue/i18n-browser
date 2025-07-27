@@ -29,6 +29,7 @@
 
 .menu {
   flex-grow: 1;
+  overflow-y: auto;
 
   ul {
     list-style: none;
