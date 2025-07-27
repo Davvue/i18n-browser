@@ -1,6 +1,33 @@
-<input type="file" accept="application/json" (change)="handleFileInput($event)"/>
+<p-card>
+  <p-floatlabel variant="in" class="mb-3">
+    <p-autoComplete
+      fluid
+      [(ngModel)]="selectedLocale"
+      [suggestions]="localeSuggestions"
+      (completeMethod)="searchLocales($event)"
+    />
+    <label>File locale</label>
+  </p-floatlabel>
 
-<input type="file" accept="application/json" (change)="handleFileInput2($event)" />
+  <p-fileupload
+    name="fileTranslations"
+    [customUpload]="true"
+    [showCancelButton]="false"
+    [auto]="true"
+    [multiple]="true"
+    (uploadHandler)="onUpload($event)"
+    accept="application/json"
+    maxFileSize="10000000"
+    mode="advanced"
+  >
+    <ng-template #empty>
+      <div class="empty-upload">
+        <i class="pi pi-cloud-upload"></i>
+        <p>Drag and drop files to here to upload.</p>
+      </div>
+    </ng-template>
+  </p-fileupload>
+</p-card>
 
 <pre>
 {{ translationService.translations() | json}}

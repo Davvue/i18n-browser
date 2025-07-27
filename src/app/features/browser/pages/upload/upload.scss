@@ -1,0 +1,18 @@
+.empty-upload {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: var(--p-fileupload-border-color) dashed 1px;
+  border-radius: var(--p-fileupload-border-radius);
+  padding: var(--p-fileupload-content-gap);
+
+  i {
+    font-size: 50px;
+  }
+
+  p {
+    margin-top: var(--p-fileupload-file-gap);
+    margin-bottom: 0;
+  }
+}

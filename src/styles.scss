@@ -1,3 +1,4 @@
+@use "styles/spacing";
 @import "primeicons/primeicons.css";
 
 html {
@@ -21,3 +22,11 @@ body {
   background: var(--p-primary-50);
   background: radial-gradient(at left bottom, var(--p-surface-800), var(--p-surface-900));
 }
+
+.content .p-card {
+  background: var(--p-card-background);
+  background: color-mix(in srgb, var(--p-card-background) 70%, transparent);
+  backdrop-filter: opacity(0.8);
+}
+
+@include spacing.spacing-classes;

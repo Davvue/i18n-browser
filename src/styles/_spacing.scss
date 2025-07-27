@@ -1,0 +1,32 @@
+@mixin spacing-classes {
+  $spacer: 1rem;
+  $sides: (
+    "": "",
+    "t": "-top",
+    "r": "-right",
+    "b": "-bottom",
+    "l": "-left",
+    "s": "-start",
+    "e": "-end"
+  );
+  $sizes: (
+    "0": 0,
+    "1": $spacer * .25,
+    "2": $spacer * .5,
+    "3": $spacer,
+    "4": $spacer * 1.5,
+    "5": $spacer * 3
+  );
+
+  @each $name, $side in $sides {
+    @each $suffix, $value in $sizes {
+      .m#{$name}-#{$suffix} {
+        margin#{$side}: $value
+      }
+
+      .p#{$name}-#{$suffix} {
+        margin#{$side}: $value;
+      }
+    }
+  }
+}

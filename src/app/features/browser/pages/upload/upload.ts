@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {TranslationService} from '../../../../core/services/translation.service';
+import {FileUploadHandlerEvent} from 'primeng/fileupload';
+import {Locale, Locales} from '../../../../../types/locales';
+import {AutoCompleteCompleteEvent} from 'primeng/autocomplete';
 
 @Component({
   selector: 'app-upload',
@@ -8,23 +11,29 @@ import {TranslationService} from '../../../../core/services/translation.service'
   styleUrl: './upload.scss'
 })
 export class Upload {
-  constructor(protected translationService: TranslationService) {}
+  localeSuggestions: Locales;
+  selectedLocale: Locale | null = null;
 
-  handleFileInput(event: Event) {
-    if (!(event.target instanceof HTMLInputElement)) return;
-
-    const file = event.target.files?.item(0);
-    if (file == null) return;
-
-    void this.translationService.loadLocale("en", file);
+  constructor(protected translationService: TranslationService) {
+    this.localeSuggestions = translationService.loadedLocales();
   }
 
-  handleFileInput2(event: Event) {
-    if (!(event.target instanceof HTMLInputElement)) return;
+  searchLocales(event: AutoCompleteCompleteEvent) {
+    this.localeSuggestions = this.translationService
+      .loadedLocales()
+      .filter(l => l.toLowerCase().includes(event.query.toLowerCase()));
 
-    const file = event.target.files?.item(0);
-    if (file == null) return;
+    if (this.localeSuggestions.length <= 0) {
+      this.localeSuggestions = [event.query];
+    }
 
-    void this.translationService.loadLocale("en", file);
+    return this.localeSuggestions
+  }
+
+  async onUpload(event: FileUploadHandlerEvent) {
+    if (!this.selectedLocale || this.selectedLocale.trim() === '') return;
+    for (const file of event.files) {
+      await this.translationService.loadLocale(this.selectedLocale, file);
+    }
   }
 }
