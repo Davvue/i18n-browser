@@ -13,6 +13,7 @@ import {AutoCompleteCompleteEvent} from 'primeng/autocomplete';
 export class Upload {
   localeSuggestions: Locales;
   selectedLocale: Locale | null = null;
+  failedUploads: Record<number, string> = {}
 
   constructor(protected translationService: TranslationService) {
     this.localeSuggestions = translationService.loadedLocales();
@@ -32,8 +33,15 @@ export class Upload {
 
   async onUpload(event: FileUploadHandlerEvent) {
     if (!this.selectedLocale || this.selectedLocale.trim() === '') return;
-    for (const file of event.files) {
-      await this.translationService.loadLocale(this.selectedLocale, file);
+    for (let i = 0; i < event.files.length; i++) {
+      const file = event.files[i];
+      try {
+        await this.translationService.loadLocale(this.selectedLocale, file);
+      } catch (error) {
+        if (error instanceof Error) this.failedUploads[i] = error.message;
+        else if (typeof error === 'string') this.failedUploads[i] = error;
+        else this.failedUploads[i] = String(error);
+      }
     }
   }
 }

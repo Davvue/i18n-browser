@@ -9,6 +9,8 @@ import {FileUploadModule} from 'primeng/fileupload';
 import {FloatLabelModule} from 'primeng/floatlabel';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {FormsModule} from '@angular/forms';
+import {TagModule} from 'primeng/tag';
+import {TooltipModule} from 'primeng/tooltip';
 
 
 @NgModule({
@@ -23,7 +25,9 @@ import {FormsModule} from '@angular/forms';
     CardModule,
     FileUploadModule,
     FloatLabelModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    TagModule,
+    TooltipModule
   ]
 })
 export class BrowserModule { }

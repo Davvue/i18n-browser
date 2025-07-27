@@ -5,6 +5,7 @@
       [(ngModel)]="selectedLocale"
       [suggestions]="localeSuggestions"
       (completeMethod)="searchLocales($event)"
+      [delay]="100"
     />
     <label>File locale</label>
   </p-floatlabel>
@@ -13,6 +14,7 @@
     name="fileTranslations"
     [customUpload]="true"
     [showCancelButton]="false"
+    [disabled]="selectedLocale == null"
     [auto]="true"
     [multiple]="true"
     (uploadHandler)="onUpload($event)"
@@ -25,6 +27,20 @@
         <i class="pi pi-cloud-upload"></i>
         <p>Drag and drop files to here to upload.</p>
       </div>
+    </ng-template>
+
+    <ng-template #content let-files>
+      @for (file of files; track file.name; let i = $index) {
+        <div class="uploaded-file">
+          <span>{{file.name}}
+            @if (i in failedUploads) {
+              <p-tag severity="danger" [pTooltip]="failedUploads[i]">Failed</p-tag>
+            } @else {
+              <p-tag severity="success">Successful</p-tag>
+            }
+          </span>
+        </div>
+      }
     </ng-template>
   </p-fileupload>
 </p-card>
