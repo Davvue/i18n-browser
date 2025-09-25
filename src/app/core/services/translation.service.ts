@@ -1,11 +1,11 @@
 import {Injectable, signal} from '@angular/core';
 import {Locale, Locales} from '../../../types/locales';
 import {
-  RawTranslation, TranslationList,
+  RawTranslation,
   TranslationNode, TranslationPath,
   TranslationRoot, TranslationValues,
 } from '../../../types/translations';
-import {isTranslationList, isTranslationNode, isTranslationValues} from '../../../lib/checkTranslationNodeType';
+import {isTranslationNode, isTranslationValues} from '../../../lib/checkTranslationNodeType';
 import {TranslationMismatchError} from '../../../errors/TranslationMismatchError';
 
 @Injectable({
@@ -71,9 +71,6 @@ export class TranslationService {
 
       if (typeof value === "string") {
         result[key] = {[locale]: value};
-      } else if (Array.isArray(value)) {
-        result[key] = [];
-        for (const item of value) result[key].push({[locale]: item});
       } else {
         result[key] = this.parseTranslations(locale, value as RawTranslation);
       }
@@ -122,32 +119,24 @@ export class TranslationService {
         out[key] = this.mergeTranslationValues(aVal, bVal, allLocales, newPath);
         continue;
       }
-      if (isTranslationList(aVal) && isTranslationList(bVal)) {
-        out[key] = this.mergeTranslationLists(aVal, bVal, allLocales, newPath);
-        continue;
-      }
 
       // ---- One side missing -------------------------------------------------
       if (aVal === undefined && bVal !== undefined) {
         out[key] =
           isTranslationNode(bVal)
             ? this.mergeTranslations(undefined, bVal, allLocales, newPath)
-            : isTranslationList(bVal)
-              ? this.mergeTranslationLists(undefined, bVal, allLocales, newPath)
-              : isTranslationValues(bVal)
-                ? this.mergeTranslationValues(undefined, bVal, allLocales, newPath)
-                : bVal; // primitive/null
+            : isTranslationValues(bVal)
+              ? this.mergeTranslationValues(undefined, bVal, allLocales, newPath)
+              : bVal; // primitive/null
         continue;
       }
       if (bVal === undefined && aVal !== undefined) {
         out[key] =
           isTranslationNode(aVal)
             ? this.mergeTranslations(aVal, undefined, allLocales, newPath)
-            : isTranslationList(aVal)
-              ? this.mergeTranslationLists(aVal, undefined, allLocales, newPath)
-              : isTranslationValues(aVal)
-                ? this.mergeTranslationValues(aVal, undefined, allLocales, newPath)
-                : aVal;
+            : isTranslationValues(aVal)
+              ? this.mergeTranslationValues(aVal, undefined, allLocales, newPath)
+              : aVal;
         continue;
       }
 
@@ -182,41 +171,12 @@ export class TranslationService {
 
     const out: TranslationValues = {};
     for (const locale of allLocales) {
-      out[locale] = b?.[locale] ?? a?.[locale] ?? null;
+      const bVal = b?.[locale];
+      const aVal = a?.[locale];
+
+      out[locale] = bVal ?? aVal ?? null;
     }
-    return out;
-  }
 
-
-  /**
-   * Merges two TranslationLists
-   * @param {TranslationList | undefined} a - Side A to merge with side B
-   * @param {TranslationList | undefined} b - Side B to merge with side A
-   * @param {Locales} allLocales - List of all locales present in the provided sets
-   * @param {TranslationPath} path - The current path for the translation key
-   * @throws {TranslationMismatchError} - If A and B define different structures for the same key, throws a TranslationMismatchError instead of merging translations incorrectly
-   * @returns {TranslationList} - A merged version of list A and list B
-   * @private
-   * @method
-   */
-  private mergeTranslationLists(
-    a: TranslationList | undefined,
-    b: TranslationList | undefined,
-    allLocales: Locales,
-    path: (string | number)[],
-  ): TranslationList {
-    if (a === undefined && b === undefined) return [];
-    if (a && !isTranslationList(a)) throw new TranslationMismatchError(path, 'TranslationList', this.describe(a));
-    if (b && !isTranslationList(b)) throw new TranslationMismatchError(path, 'TranslationList', this.describe(b));
-
-    const max = Math.max(a?.length ?? 0, b?.length ?? 0);
-    const out: TranslationList = [];
-
-    for (let i = 0; i < max; i++) {
-      out.push(
-        this.mergeTranslationValues(a?.[i], b?.[i], allLocales, [...path, i])
-      );
-    }
     return out;
   }
 
@@ -233,8 +193,6 @@ export class TranslationService {
       return 'TranslationNode';
     if (isTranslationValues(val))
       return 'TranslationValues';
-    if (Array.isArray(val))
-      return 'TranslationList';
     return typeof val;
   }
 }

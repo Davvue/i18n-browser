@@ -1,4 +1,4 @@
-import {TranslationList, TranslationNode, TranslationValues} from '../types/translations';
+import {TranslationNode, TranslationValues} from '../types/translations';
 
 /**
  * Determines whether a provided value confirms with type TranslationsValues
@@ -6,21 +6,11 @@ import {TranslationList, TranslationNode, TranslationValues} from '../types/tran
  * @returns {boolean} - Type predicate indicating if a value confirms with type TranslationValues
  */
 export function isTranslationValues(value: unknown): value is TranslationValues {
-  if (value == null || typeof value !== "object") return false;
+  if (value == null || typeof value !== "object" || Array.isArray(value)) return false;
 
-  return Object.values(value).every((v) => typeof v === 'string');
-}
-
-
-/**
- * Determines whether a provided value confirms with type TranslationList
- * @param {unknown} value - Value to check
- * @returns {boolean} - Type predicate indicating if a value confirms with type TranslationList
- */
-export function isTranslationList(value: unknown): value is TranslationList {
-  if (value == null || typeof value !== "object") return false;
-
-  return (Array.isArray(value));
+  return Object.values(value).every(
+    (v) => typeof v === 'string' || v === null || v === undefined
+  );
 }
 
 
@@ -32,5 +22,5 @@ export function isTranslationList(value: unknown): value is TranslationList {
 export function isTranslationNode(value: unknown): value is TranslationNode {
   if (value == null || typeof value !== "object") return false;
 
-  return !isTranslationList(value) && !isTranslationValues(value);
+  return !isTranslationValues(value);
 }

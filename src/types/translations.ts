@@ -17,19 +17,11 @@ export interface TranslationValues {
 
 
 /**
- * A list of translations
- * @see TranslationValues
- */
-export type TranslationList = TranslationValues[];
-
-
-/**
- * A translation node either containing other nodes, lists, or values
- * @see TranslationList
+ * A translation node either containing other nodes or values
  * @see TranslationValues
  */
 export interface TranslationNode {
-  [key: string]: TranslationNode | TranslationList | TranslationValues;
+  [key: string]: TranslationNode | TranslationValues;
 }
 
 
@@ -44,10 +36,10 @@ export type TranslationRoot = TranslationNode;
 /**
  * Raw translations object coming from a file
  */
-export type RawTranslation = Record<string | number, unknown>;
+export type RawTranslation = Record<string, unknown>;
 
 
 /**
  * The path to a translation key
  */
-export type TranslationPath = (string | number)[];
+export type TranslationPath = string[];
