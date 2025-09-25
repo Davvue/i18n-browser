@@ -5,7 +5,7 @@
       [(ngModel)]="selectedLocale"
       [suggestions]="localeSuggestions"
       (completeMethod)="searchLocales($event)"
-      [delay]="100"
+      [delay]="0"
     />
     <label>File locale</label>
   </p-floatlabel>
@@ -30,7 +30,7 @@
     </ng-template>
 
     <ng-template #content let-files>
-      @for (file of files; track file.name; let i = $index) {
+      @for (file of files; track `${file.name}-${file.lastModified}`; let i = $index;) {
         <div class="uploaded-file">
           <span>{{file.name}}
             @if (i in failedUploads) {

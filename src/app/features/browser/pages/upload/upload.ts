@@ -28,6 +28,13 @@ export class Upload {
       this.localeSuggestions = [event.query];
     }
 
+    if (this.localeSuggestions[0].toLowerCase() !== event.query.toLowerCase()) {
+      this.localeSuggestions = [
+        event.query,
+        ...this.localeSuggestions
+      ];
+    }
+
     return this.localeSuggestions
   }
 
