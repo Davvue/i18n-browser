@@ -1,4 +1,5 @@
 import {formatTranslationPath} from '../lib/formatTranslationPath';
+import {TranslationPath} from '../types/translations';
 
 /**
  * An error indicating a structural mismatch between translations
@@ -11,7 +12,7 @@ export class TranslationMismatchError extends Error {
    */
   readonly path: string;
 
-  constructor(path: (string | number)[], expected: string, actual: string) {
+  constructor(path: TranslationPath, expected: string, actual: string) {
     super(
       `Structure mismatch at "${formatTranslationPath(path)}": ` +
       `expected ${expected}, received ${actual}`
