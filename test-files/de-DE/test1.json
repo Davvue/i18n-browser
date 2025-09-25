@@ -1,0 +1,16 @@
+{
+  "namespace": {
+    "back": "Zurück",
+    "next": "Weiter",
+    "done": "Fertig"
+  },
+  "topLevelTranslation": "Top-Level Übersetzung",
+  "nestedTranslations": {
+    "a": {
+      "hello": "Hallo"
+    },
+    "b": {
+      "world": "Welt"
+    }
+  }
+}
