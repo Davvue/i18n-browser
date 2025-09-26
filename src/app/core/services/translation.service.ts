@@ -37,13 +37,18 @@ export class TranslationService {
   async loadLocale(locale: Locale, file: File): Promise<void> {
     const fileContent = await file.text();
     const fileTranslations = await JSON.parse(fileContent);
+    const fileNamespace = this.getNamespaceFromFileName(file.name);
 
     if (!fileTranslations) throw new TypeError();
     if (typeof fileTranslations !== "object") throw new TypeError("File translations must be an object");
     if (Array.isArray(fileTranslations)) throw new TypeError("Root translations must not be an array");
 
     const translationRoot = this.parseTranslations(locale, fileTranslations);
-    const mergedTranslations = this.mergeTranslations(this.translations(), translationRoot, [...this.loadedLocales(), locale]);
+    const mergedTranslations = this.mergeTranslations(
+      this.translations(),
+      {[fileNamespace]: translationRoot},
+      [...this.loadedLocales(), locale]
+    );
     this.loadedLocales.update(prev => {
       if (prev.includes(locale)) return prev;
       return [...prev, locale];
@@ -114,8 +119,7 @@ export class TranslationService {
       if (isTranslationNode(aVal) && isTranslationNode(bVal)) {
         out[key] = this.mergeTranslations(aVal, bVal, allLocales, newPath);
         continue;
-      }
-      if (isTranslationValues(aVal) && isTranslationValues(bVal)) {
+      } else if (isTranslationValues(aVal) && isTranslationValues(bVal)) {
         out[key] = this.mergeTranslationValues(aVal, bVal, allLocales, newPath);
         continue;
       }
@@ -178,6 +182,20 @@ export class TranslationService {
     }
 
     return out;
+  }
+
+
+  /**
+   * Extracts the translation namespace from the provided file name
+   *
+   * @param {string} fileName - The filename to get the namespace of
+   * @returns {string} - The namespace for the file
+   * @private
+   * @method
+   */
+  private getNamespaceFromFileName(fileName: string): string {
+    const nameFragments = fileName.split(".");
+    return nameFragments.slice(0, -1).join(".");
   }
 
 

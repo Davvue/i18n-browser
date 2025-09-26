@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, inject, viewChild} from '@angular/core';
 import {TranslationService} from '../../../../core/services/translation.service';
-import {FileUploadHandlerEvent} from 'primeng/fileupload';
+import {FileUpload, FileUploadHandlerEvent} from 'primeng/fileupload';
 import {Locale, Locales} from '../../../../../types/locales';
 import {AutoCompleteCompleteEvent} from 'primeng/autocomplete';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-upload',
@@ -11,9 +12,11 @@ import {AutoCompleteCompleteEvent} from 'primeng/autocomplete';
   styleUrl: './upload.scss'
 })
 export class Upload {
+  router = inject(Router);
   localeSuggestions: Locales;
   selectedLocale: Locale | null = null;
   failedUploads: Record<number, string> = {}
+  uploadForm = viewChild<FileUpload>("upload");
 
   constructor(protected translationService: TranslationService) {
     this.localeSuggestions = translationService.loadedLocales();
@@ -50,5 +53,8 @@ export class Upload {
         else this.failedUploads[i] = String(error);
       }
     }
+    this.uploadForm()?.clear();
+
+    await this.router.navigate(["/browser"]);
   }
 }
